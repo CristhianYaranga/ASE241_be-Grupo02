@@ -1,0 +1,80 @@
+spring:
+  application:
+    name: Agroguard
+  
+  # Desactivar Docker Compose Management
+  docker:
+    compose:
+      enabled: false
+  
+  # JPA/Hibernate Configuration
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+    show-sql: false
+    open-in-view: false
+  
+  # DataSource Configuration
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=AroGuard;encrypt=true;trustServerCertificate=true
+    username: sa
+    password: arona123!
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  
+  # Jackson Configuration (JSON Serialization)
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+      indent-output: true
+  
+  # Web Configuration
+  web:
+    cors:
+      allowed-origins: "http://localhost:4200"
+      allowed-methods: GET, POST, PUT, DELETE, OPTIONS
+      allowed-headers: "*"
+      allow-credentials: true
+      max-age: 3600
+
+# Server Configuration
+server:
+  port: 3000
+  servlet:
+    context-path: /api
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    vallegrande.edu.pe.Agroguard: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# OpenAPI/Swagger Configuration
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  api-docs:
+    path: /v3/api-docs
+  show-actuator: true
+  title: AgroGuard API
+  description: API REST para gestión de plagas y enfermedades agrícolas
+  version: 1.0.0
+  contact:
+    name: AgroGuard Team
+    email: info@agroguard.com
+  license:
+    name: MIT
