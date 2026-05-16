@@ -24,7 +24,7 @@ spring:
   
   # DataSource Configuration
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=AroGuard;encrypt=true;trustServerCertificate=true
+    url: jdbc:sqlserver://localhost:1433;databaseName=AgroGuard;encrypt=true;trustServerCertificate=true
     username: sa
     password: arona123!
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver

@@ -2,7 +2,6 @@ package vallegrande.edu.pe.Agroguard.service;
 
 import vallegrande.edu.pe.Agroguard.dto.PlagaRequestDTO;
 import vallegrande.edu.pe.Agroguard.dto.PlagaResponseDTO;
-import vallegrande.edu.pe.Agroguard.entity.Plaga;
 import java.util.List;
 
 /**
@@ -48,17 +47,4 @@ public interface PlagaService {
      */
     void eliminarPlaga(Long id);
     
-    /**
-     * Obtiene plagas filtradas por tipo
-     * @param tipo tipo de plaga (insectos, hongos, bacterias, virus)
-     * @return lista de plagas del tipo especificado
-     */
-    List<PlagaResponseDTO> obtenerPlagasPorTipo(String tipo);
-    
-    /**
-     * Obtiene plagas filtradas por prioridad
-     * @param prioridad prioridad (baja, media, alta)
-     * @return lista de plagas con la prioridad especificada
-     */
-    List<PlagaResponseDTO> obtenerPlagasPorPrioridad(String prioridad);
 }

@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vallegrande.edu.pe.Agroguard.dto.TratamientoRequestDTO;
 import vallegrande.edu.pe.Agroguard.dto.TratamientoResponseDTO;
-import vallegrande.edu.pe.Agroguard.dto.EstadisticasTratamientoDTO;
 import vallegrande.edu.pe.Agroguard.service.TratamientoService;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class TratamientoController {
      */
     @GetMapping
     @Operation(summary = "Obtener todos los tratamientos",
-               description = "Retorna una lista completa de todos los tratamientos registrados")
+               description = "Retorna una lista completa del catalogo de tratamientos")
     @ApiResponse(responseCode = "200", description = "Lista de tratamientos obtenida exitosamente",
                 content = @Content(mediaType = "application/json",
                                  schema = @Schema(implementation = TratamientoResponseDTO.class)))
@@ -59,7 +58,7 @@ public class TratamientoController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "Obtener tratamiento por ID",
-               description = "Retorna los detalles de un tratamiento específico")
+               description = "Retorna los detalles de un tratamiento del catalogo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Tratamiento encontrado",
                     content = @Content(mediaType = "application/json",
@@ -80,13 +79,13 @@ public class TratamientoController {
      */
     @PostMapping
     @Operation(summary = "Crear nuevo tratamiento",
-               description = "Crea un nuevo tratamiento con los datos proporcionados")
+               description = "Crea un nuevo tratamiento en el catalogo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Tratamiento creado exitosamente",
                     content = @Content(mediaType = "application/json",
                                      schema = @Schema(implementation = TratamientoResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-        @ApiResponse(responseCode = "404", description = "Cultivo o plaga no encontrado")
+        @ApiResponse(responseCode = "404", description = "Tratamiento no encontrado")
     })
     public ResponseEntity<TratamientoResponseDTO> crearTratamiento(
             @Valid @RequestBody TratamientoRequestDTO request) {
@@ -101,7 +100,7 @@ public class TratamientoController {
      */
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar tratamiento",
-               description = "Actualiza los datos de un tratamiento existente")
+               description = "Actualiza los datos de un tratamiento del catalogo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Tratamiento actualizado exitosamente",
                     content = @Content(mediaType = "application/json",
@@ -124,7 +123,7 @@ public class TratamientoController {
      */
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar tratamiento",
-               description = "Elimina un tratamiento del sistema")
+               description = "Elimina un tratamiento del catalogo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Tratamiento eliminado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Tratamiento no encontrado")
@@ -137,71 +136,4 @@ public class TratamientoController {
         return ResponseEntity.noContent().build();
     }
     
-    /**
-     * GET /api/tratamientos/estado/{estado}
-     * Filtra tratamientos por estado
-     */
-    @GetMapping("/estado/{estado}")
-    @Operation(summary = "Obtener tratamientos por estado",
-               description = "Retorna tratamientos filtrados por estado (activo, completado, pendiente)")
-    @ApiResponse(responseCode = "200", description = "Lista de tratamientos filtrada",
-                content = @Content(mediaType = "application/json",
-                                 schema = @Schema(implementation = TratamientoResponseDTO.class)))
-    public ResponseEntity<List<TratamientoResponseDTO>> obtenerTratamientosPorEstado(
-            @Parameter(description = "Estado: activo, completado, pendiente")
-            @PathVariable String estado) {
-        log.info("GET /tratamientos/estado/{} - Obteniendo tratamientos por estado", estado);
-        List<TratamientoResponseDTO> tratamientos = tratamientoService.obtenerTratamientosPorEstado(estado);
-        return ResponseEntity.ok(tratamientos);
-    }
-    
-    /**
-     * GET /api/tratamientos/estado/activo
-     * Obtiene solo tratamientos activos
-     */
-    @GetMapping("/activos")
-    @Operation(summary = "Obtener tratamientos activos",
-               description = "Retorna solo los tratamientos en estado activo")
-    @ApiResponse(responseCode = "200", description = "Lista de tratamientos activos",
-                content = @Content(mediaType = "application/json",
-                                 schema = @Schema(implementation = TratamientoResponseDTO.class)))
-    public ResponseEntity<List<TratamientoResponseDTO>> obtenerTratamientosActivos() {
-        log.info("GET /tratamientos/activos - Obteniendo tratamientos activos");
-        List<TratamientoResponseDTO> tratamientos = tratamientoService.obtenerTratamientosActivos();
-        return ResponseEntity.ok(tratamientos);
-    }
-    
-    /**
-     * GET /api/tratamientos/cultivo/{cultivo}
-     * Filtra tratamientos por cultivo
-     */
-    @GetMapping("/cultivo/{cultivo}")
-    @Operation(summary = "Obtener tratamientos por cultivo",
-               description = "Retorna tratamientos filtrados por nombre de cultivo")
-    @ApiResponse(responseCode = "200", description = "Lista de tratamientos filtrada",
-                content = @Content(mediaType = "application/json",
-                                 schema = @Schema(implementation = TratamientoResponseDTO.class)))
-    public ResponseEntity<List<TratamientoResponseDTO>> obtenerTratamientosPorCultivo(
-            @Parameter(description = "Nombre del cultivo")
-            @PathVariable String cultivo) {
-        log.info("GET /tratamientos/cultivo/{} - Obteniendo tratamientos por cultivo", cultivo);
-        List<TratamientoResponseDTO> tratamientos = tratamientoService.obtenerTratamientosPorCultivo(cultivo);
-        return ResponseEntity.ok(tratamientos);
-    }
-    
-    /**
-     * GET /api/tratamientos/estadisticas
-     * Obtiene estadísticas de tratamientos
-     */
-    @GetMapping("/estadisticas")
-    @Operation(summary = "Obtener estadísticas",
-               description = "Retorna estadísticas generales de los tratamientos")
-    @ApiResponse(responseCode = "200", description = "Estadísticas obtenidas",
-                content = @Content(mediaType = "application/json",
-                                 schema = @Schema(implementation = EstadisticasTratamientoDTO.class)))
-    public ResponseEntity<EstadisticasTratamientoDTO> obtenerEstadisticas() {
-        log.info("GET /tratamientos/estadisticas - Obteniendo estadísticas");
-        EstadisticasTratamientoDTO estadisticas = tratamientoService.obtenerEstadisticas();
-        return ResponseEntity.ok(estadisticas);
-    }
 }

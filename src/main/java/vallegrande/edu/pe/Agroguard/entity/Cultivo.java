@@ -32,12 +32,6 @@ public class Cultivo {
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String descripcion;
     
-    @ManyToMany(mappedBy = "cultivos", fetch = FetchType.LAZY)
-    private Set<Plaga> plagas = new HashSet<>();
-    
-    @OneToMany(mappedBy = "cultivo", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<Tratamiento> tratamientos = new HashSet<>();
-    
     @Column(name = "createdAt", nullable = false, updatable = false)
     private LocalDateTime createdAt;
     

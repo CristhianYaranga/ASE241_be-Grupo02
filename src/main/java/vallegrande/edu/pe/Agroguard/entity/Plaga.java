@@ -3,21 +3,17 @@ package vallegrande.edu.pe.Agroguard.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.time.LocalDateTime;
 
 /**
  * Entidad Plaga
- * Representa una plaga o enfermedad que afecta cultivos agrícolas
+ * Representa una plaga del catalogo
  * 
  * @author AgroGuard Team
  * @version 1.0
  */
 @Entity
-@Table(name = "Plagas", indexes = {
-    @Index(name = "idx_tipo", columnList = "tipo"),
-    @Index(name = "idx_prioridad", columnList = "prioridad"),
-    @Index(name = "idx_nombre", columnList = "nombre")
-})
+@Table(name = "PESTS")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,43 +22,31 @@ public class Plaga {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_pests")
     private Long id;
     
-    @Column(nullable = false, unique = true, length = 255)
-    private String nombre;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    private TipoPlaga tipo;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private Prioridad prioridad;
-    
-    @Column(nullable = false, columnDefinition = "NVARCHAR(MAX)")
-    private String descripcion;
-    
-    @OneToMany(mappedBy = "plaga", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<Sintoma> sintomas = new HashSet<>();
-    
-    @OneToMany(mappedBy = "plaga", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<TratamientoRecomendado> tratamientosRecomendados = new HashSet<>();
-    
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "Plagas_Cultivos",
-        joinColumns = @JoinColumn(name = "plagaId"),
-        inverseJoinColumns = @JoinColumn(name = "cultivoId")
-    )
-    private Set<Cultivo> cultivos = new HashSet<>();
-    
-    @OneToMany(mappedBy = "plaga", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<Tratamiento> tratamientos = new HashSet<>();
-    
-    @Column(name = "createdAt", nullable = false, updatable = false)
+    @Column(name = "name_pests", nullable = false, length = 100)
+    private String namePests;
+
+    @Column(name = "category", nullable = false, length = 50)
+    private String category;
+
+    @Column(name = "description", length = 500)
+    private String description;
+
+    @Column(name = "symptoms", length = 500)
+    private String symptoms;
+
+    @Column(name = "risk_level", nullable = false, length = 10)
+    private String riskLevel;
+
+    @Column(name = "image_url", length = 300)
+    private String imageUrl;
+
+    @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
-    @Column(name = "updatedAt")
+    @Column(name = "update_date")
     private LocalDateTime updatedAt;
     
     @PrePersist
@@ -76,42 +60,4 @@ public class Plaga {
         updatedAt = LocalDateTime.now();
     }
     
-    /**
-     * Enum para tipos de plagas
-     */
-    public enum TipoPlaga {
-        INSECTOS("insectos"),
-        HONGOS("hongos"),
-        BACTERIAS("bacterias"),
-        VIRUS("virus");
-        
-        private final String valor;
-        
-        TipoPlaga(String valor) {
-            this.valor = valor;
-        }
-        
-        public String getValor() {
-            return valor;
-        }
-    }
-    
-    /**
-     * Enum para prioridades
-     */
-    public enum Prioridad {
-        BAJA("baja"),
-        MEDIA("media"),
-        ALTA("alta");
-        
-        private final String valor;
-        
-        Prioridad(String valor) {
-            this.valor = valor;
-        }
-        
-        public String getValor() {
-            return valor;
-        }
-    }
 }

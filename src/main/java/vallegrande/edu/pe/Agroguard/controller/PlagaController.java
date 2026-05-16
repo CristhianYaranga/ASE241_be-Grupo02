@@ -42,7 +42,7 @@ public class PlagaController {
      */
     @GetMapping
     @Operation(summary = "Obtener todas las plagas", 
-               description = "Retorna una lista completa de todas las plagas registradas")
+               description = "Retorna una lista completa del catalogo de plagas")
     @ApiResponse(responseCode = "200", description = "Lista de plagas obtenida exitosamente",
                  content = @Content(mediaType = "application/json",
                                   schema = @Schema(implementation = PlagaResponseDTO.class)))
@@ -58,7 +58,7 @@ public class PlagaController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "Obtener plaga por ID",
-               description = "Retorna los detalles de una plaga específica")
+               description = "Retorna los detalles de una plaga del catalogo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Plaga encontrada",
                     content = @Content(mediaType = "application/json",
@@ -79,7 +79,7 @@ public class PlagaController {
      */
     @PostMapping
     @Operation(summary = "Crear nueva plaga",
-               description = "Crea una nueva plaga con los datos proporcionados")
+               description = "Crea una nueva plaga en el catalogo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Plaga creada exitosamente",
                     content = @Content(mediaType = "application/json",
@@ -89,7 +89,7 @@ public class PlagaController {
     })
     public ResponseEntity<PlagaResponseDTO> crearPlaga(
             @Valid @RequestBody PlagaRequestDTO request) {
-        log.info("POST /plagas - Creando nueva plaga: {}", request.getNombre());
+        log.info("POST /plagas - Creando nueva plaga: {}", request.getNamePests());
         PlagaResponseDTO plagaCreada = plagaService.crearPlaga(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(plagaCreada);
     }
@@ -100,7 +100,7 @@ public class PlagaController {
      */
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar plaga",
-               description = "Actualiza los datos de una plaga existente")
+               description = "Actualiza los datos de una plaga del catalogo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Plaga actualizada exitosamente",
                     content = @Content(mediaType = "application/json",
@@ -123,7 +123,7 @@ public class PlagaController {
      */
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar plaga",
-               description = "Elimina una plaga del sistema")
+               description = "Elimina una plaga del catalogo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Plaga eliminada exitosamente"),
         @ApiResponse(responseCode = "404", description = "Plaga no encontrada")
@@ -136,39 +136,4 @@ public class PlagaController {
         return ResponseEntity.noContent().build();
     }
     
-    /**
-     * GET /api/plagas/tipo/{tipo}
-     * Filtra plagas por tipo
-     */
-    @GetMapping("/tipo/{tipo}")
-    @Operation(summary = "Obtener plagas por tipo",
-               description = "Retorna plagas filtradas por tipo (insectos, hongos, bacterias, virus)")
-    @ApiResponse(responseCode = "200", description = "Lista de plagas filtrada",
-                content = @Content(mediaType = "application/json",
-                                 schema = @Schema(implementation = PlagaResponseDTO.class)))
-    public ResponseEntity<List<PlagaResponseDTO>> obtenerPlagasPorTipo(
-            @Parameter(description = "Tipo de plaga: insectos, hongos, bacterias, virus")
-            @PathVariable String tipo) {
-        log.info("GET /plagas/tipo/{} - Obteniendo plagas por tipo", tipo);
-        List<PlagaResponseDTO> plagas = plagaService.obtenerPlagasPorTipo(tipo);
-        return ResponseEntity.ok(plagas);
-    }
-    
-    /**
-     * GET /api/plagas/prioridad/{prioridad}
-     * Filtra plagas por prioridad
-     */
-    @GetMapping("/prioridad/{prioridad}")
-    @Operation(summary = "Obtener plagas por prioridad",
-               description = "Retorna plagas filtradas por prioridad (baja, media, alta)")
-    @ApiResponse(responseCode = "200", description = "Lista de plagas filtrada",
-                content = @Content(mediaType = "application/json",
-                                 schema = @Schema(implementation = PlagaResponseDTO.class)))
-    public ResponseEntity<List<PlagaResponseDTO>> obtenerPlagasPorPrioridad(
-            @Parameter(description = "Prioridad: baja, media, alta")
-            @PathVariable String prioridad) {
-        log.info("GET /plagas/prioridad/{} - Obteniendo plagas por prioridad", prioridad);
-        List<PlagaResponseDTO> plagas = plagaService.obtenerPlagasPorPrioridad(prioridad);
-        return ResponseEntity.ok(plagas);
-    }
 }

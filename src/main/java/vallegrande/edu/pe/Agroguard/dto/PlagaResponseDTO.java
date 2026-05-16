@@ -2,7 +2,6 @@ package vallegrande.edu.pe.Agroguard.dto;
 
 import lombok.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * DTO para respuestas de Plagas
@@ -17,13 +16,12 @@ import java.util.List;
 public class PlagaResponseDTO {
     
     private Long id;
-    private String nombre;
-    private String tipo;
-    private String prioridad;
-    private String descripcion;
-    private List<String> sintomas;
-    private List<String> tratamientosRecomendados;
-    private List<String> cultivosAfectados;
+    private String namePests;
+    private String category;
+    private String description;
+    private String symptoms;
+    private String riskLevel;
+    private String imageUrl;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

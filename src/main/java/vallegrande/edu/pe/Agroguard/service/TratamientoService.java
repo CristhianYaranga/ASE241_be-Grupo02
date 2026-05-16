@@ -2,7 +2,6 @@ package vallegrande.edu.pe.Agroguard.service;
 
 import vallegrande.edu.pe.Agroguard.dto.TratamientoRequestDTO;
 import vallegrande.edu.pe.Agroguard.dto.TratamientoResponseDTO;
-import vallegrande.edu.pe.Agroguard.dto.EstadisticasTratamientoDTO;
 import java.util.List;
 
 /**
@@ -48,29 +47,4 @@ public interface TratamientoService {
      */
     void eliminarTratamiento(Long id);
     
-    /**
-     * Obtiene tratamientos filtrados por estado
-     * @param estado estado del tratamiento (activo, completado, pendiente)
-     * @return lista de tratamientos con el estado especificado
-     */
-    List<TratamientoResponseDTO> obtenerTratamientosPorEstado(String estado);
-    
-    /**
-     * Obtiene tratamientos activos
-     * @return lista de tratamientos activos
-     */
-    List<TratamientoResponseDTO> obtenerTratamientosActivos();
-    
-    /**
-     * Obtiene tratamientos filtrados por cultivo
-     * @param cultivoNombre nombre del cultivo
-     * @return lista de tratamientos para el cultivo
-     */
-    List<TratamientoResponseDTO> obtenerTratamientosPorCultivo(String cultivoNombre);
-    
-    /**
-     * Obtiene estadísticas de tratamientos
-     * @return DTO con estadísticas
-     */
-    EstadisticasTratamientoDTO obtenerEstadisticas();
 }
